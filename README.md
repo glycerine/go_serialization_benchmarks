@@ -31,12 +31,6 @@ go get -u -t
 go test -bench='.*' ./
 ```
 
-Shameless plug: I use [pawk](https://github.com/alecthomas/pawk) to format the table:
-
-```bash
-go test -bench='.*' ./ | pawk -F'\t' '"%-40s %10s %10s %s %s" % f'
-```
-
 ## Recommendation
 
 Adapt these benchmarks to your data, and make your own measurements.
