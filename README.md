@@ -23,6 +23,7 @@ This is a test suite for benchmarking various Go serialization methods.
 - [zombiezen.com/go/capnproto2](https://godoc.org/zombiezen.com/go/capnproto2)
 - [github.com/andyleap/gencode](https://github.com/andyleap/gencode)
 - [git.apache.org/thrift.git/lib/go/thrift](https://thrift.apache.org/lib/go) (Thrift CompactBinary and Thrift Binary formats)
+
 ## Running the benchmarks
 
 ```bash
