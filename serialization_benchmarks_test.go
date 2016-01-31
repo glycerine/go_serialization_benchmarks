@@ -540,10 +540,14 @@ func (x *CapNProtoSerializer) Unmarshal(d []byte, i interface{}) error {
 	//
 	// In general you should only use unsafe if you can
 	// guarantee those bytes won't be changing
-	// out from under you when they are accessed afterwards.
+	// out from under you when they are accessed afterwards [1].
 	// Quite frequently this is possible if you own the
 	// []byte buffer, process each message in turn, and then
-	// never refer to the string again.
+	// never refer to the string again. This can make a huge
+	// perf difference when dealing with large data.
+	//
+	// reference
+	// [1] https://groups.google.com/d/topic/golang-nuts/ENgbUzYvCuU
 
 	// 1st possible allocation: Avoided using unsafe; could
 	// also be avoided by storing Name as []byte instead
