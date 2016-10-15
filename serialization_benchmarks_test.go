@@ -23,8 +23,8 @@ import (
 	"github.com/hprose/hprose-go"
 	"github.com/tinylib/msgp/msgp"
 	"github.com/ugorji/go/codec"
-	vitessbson "github.com/youtube/vitess/go/bson"
-	"gopkg.in/mgo.v2/bson"
+	//vitessbson "github.com/youtube/vitess/go/bson"
+	//"gopkg.in/mgo.v2/bson"
 	vmihailenco "gopkg.in/vmihailenco/msgpack.v2"
 )
 
@@ -134,30 +134,6 @@ See README.md for details on running the benchmarks.
 
 }
 
-// github.com/tinylib/msgp
-
-type MsgpSerializer struct{}
-
-func (m MsgpSerializer) Marshal(o interface{}) []byte {
-	out, _ := o.(msgp.Marshaler).MarshalMsg(nil)
-	return out
-}
-
-func (m MsgpSerializer) Unmarshal(d []byte, o interface{}) error {
-	_, err := o.(msgp.Unmarshaler).UnmarshalMsg(d)
-	return err
-}
-
-func (m MsgpSerializer) String() string { return "Msgp" }
-
-func BenchmarkMsgpMarshal(b *testing.B) {
-	benchMarshal(b, MsgpSerializer{})
-}
-
-func BenchmarkMsgpUnmarshal(b *testing.B) {
-	benchUnmarshal(b, MsgpSerializer{})
-}
-
 // gopkg.in/vmihailenco/msgpack.v2
 
 type VmihailencoMsgpackSerializer struct{}
@@ -206,56 +182,6 @@ func BenchmarkJsonMarshal(b *testing.B) {
 
 func BenchmarkJsonUnmarshal(b *testing.B) {
 	benchUnmarshal(b, JsonSerializer{})
-}
-
-// gopkg.in/mgo.v2/bson
-
-type BsonSerializer struct{}
-
-func (m BsonSerializer) Marshal(o interface{}) []byte {
-	d, _ := bson.Marshal(o)
-	return d
-}
-
-func (m BsonSerializer) Unmarshal(d []byte, o interface{}) error {
-	return bson.Unmarshal(d, o)
-}
-
-func (j BsonSerializer) String() string {
-	return "bson"
-}
-
-func BenchmarkBsonMarshal(b *testing.B) {
-	benchMarshal(b, BsonSerializer{})
-}
-
-func BenchmarkBsonUnmarshal(b *testing.B) {
-	benchUnmarshal(b, BsonSerializer{})
-}
-
-// github.com/youtube/vitess/go/bson
-
-type VitessBsonSerializer struct{}
-
-func (m VitessBsonSerializer) Marshal(o interface{}) []byte {
-	d, _ := vitessbson.Marshal(o)
-	return d
-}
-
-func (m VitessBsonSerializer) Unmarshal(d []byte, o interface{}) error {
-	return vitessbson.Unmarshal(d, o)
-}
-
-func (j VitessBsonSerializer) String() string {
-	return "vitessbson"
-}
-
-func BenchmarkVitessBsonMarshal(b *testing.B) {
-	benchMarshal(b, VitessBsonSerializer{})
-}
-
-func BenchmarkVitessBsonUnmarshal(b *testing.B) {
-	benchUnmarshal(b, VitessBsonSerializer{})
 }
 
 // encoding/gob
@@ -897,5 +823,92 @@ func benchUnmarshalCapn(b *testing.B, s *CapNProtoSerializer) {
 				b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
 			}
 		}
+	}
+}
+
+// github.com/tinylib/msgp
+
+type MsgpSerializer struct{}
+
+func (m MsgpSerializer) Marshal(o interface{}) []byte {
+	out, _ := o.(msgp.Marshaler).MarshalMsg(nil)
+	return out
+}
+
+func (m MsgpSerializer) Unmarshal(d []byte, o interface{}) error {
+	_, err := o.(msgp.Unmarshaler).UnmarshalMsg(d)
+	return err
+}
+
+func (m MsgpSerializer) String() string { return "Msgp" }
+
+func BenchmarkMsgpMarshal(b *testing.B) {
+	benchMarshal(b, MsgpSerializer{})
+}
+
+func BenchmarkMsgpUnmarshal(b *testing.B) {
+	benchUnmarshal(b, MsgpSerializer{})
+}
+
+// github.com/tinylib/msgp - ZebraPack variation
+
+func BenchmarkZebraPackUnmarshal(b *testing.B) {
+	b.StopTimer()
+	data := generateZebraPack()
+	ser := make([][]byte, len(data))
+	for i, d := range data {
+		ser[i], _ = d.ZebraPackMarshalMsg(nil)
+		//ser[i], _ = proto.Marshal(d)
+	}
+	o := &A{}
+	z := A{}
+	var n int
+	var err error
+	b.ResetTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		n = rand.Intn(len(ser))
+		*o = z // clear
+		_, err = o.ZebraPackUnmarshalMsg(ser[n])
+		if err != nil {
+			b.Fatalf("zebrapack failed to unmarshal: %s (%s)", err, ser[n])
+		}
+		/*
+			// Validate unmarshalled data.
+			if validate != "" {
+				i := data[n]
+				correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay == i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
+				if !correct {
+					b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
+				}
+			}
+		*/
+	}
+}
+
+func generateZebraPack() []*A {
+	a := make([]*A, 0, 1000)
+	for i := 0; i < 1000; i++ {
+		a = append(a, &A{
+			Name:     randString(16),
+			BirthDay: time.Now(),
+			Phone:    randString(10),
+			Siblings: rand.Intn(5),
+			Spouse:   rand.Intn(2) == 1,
+			Money:    rand.Float64(),
+		})
+	}
+	return a
+}
+
+func BenchmarkZebraPackMarshal(b *testing.B) {
+	b.StopTimer()
+	data := generateZebraPack()
+	b.ReportAllocs()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		data[rand.Intn(len(data))].ZebraPackMarshalMsg(nil)
+		//proto.Marshal(data[rand.Intn(len(data))])
 	}
 }

@@ -15,8 +15,6 @@ structdef-gogo.pb.go: structdef-gogo.proto
 structdef.pb.go: structdef.proto
 	protoc --go_out=. structdef.proto
 
-vitess_test.go: structdef.go
-	bsongen -file=structdef.go -o=vitess_test.go -type=A
 
 structdef.capnp2.go: structdef.capnp2
 	go get -u zombiezen.com/go/capnproto2/...
@@ -25,7 +23,7 @@ structdef.capnp2.go: structdef.capnp2
 structdef.capnp.go: structdef.capnp
 	go get -u github.com/glycerine/go-capnproto/capnpc-go
 	capnp compile -I${GOPATH}/src -ogo structdef.capnp
-	
+
 gencode.schema.gen.go: gencode.schema
 	go get -u github.com/andyleap/gencode
 	gencode go -schema=gencode.schema -package=goserbench
@@ -40,7 +38,6 @@ install:
 	go get -u github.com/gogo/protobuf/gogoproto
 	go get -u github.com/golang/protobuf/protoc-gen-go
 	go get -u github.com/tinylib/msgp
-	go get -u github.com/youtube/vitess/go/cmd/bsongen
 	go get -u github.com/andyleap/gencode
 
 	go get -u github.com/DeDiS/protobuf
@@ -51,8 +48,6 @@ install:
 	go get -u github.com/google/flatbuffers/go
 	go get -u github.com/tinylib/msgp/msgp
 	go get -u github.com/ugorji/go/codec
-	go get -u github.com/youtube/vitess/go/bson
-	go get -u gopkg.in/mgo.v2/bson
 	go get -u gopkg.in/vmihailenco/msgpack.v2
 	go get -u github.com/golang/protobuf/proto
 	go get -u github.com/hprose/hprose-go/io
