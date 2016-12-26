@@ -21,7 +21,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
 	"github.com/hprose/hprose-go"
-	"github.com/tinylib/msgp/msgp"
+	//"github.com/tinylib/msgp/msgp"
 	"github.com/ugorji/go/codec"
 	//vitessbson "github.com/youtube/vitess/go/bson"
 	//"gopkg.in/mgo.v2/bson"
@@ -32,6 +32,12 @@ var (
 	validate = os.Getenv("VALIDATE")
 )
 
+var commonData []*A
+
+func init() {
+	commonData = generate()
+}
+
 func randString(l int) string {
 	buf := make([]byte, l)
 	for i := 0; i < (l+1)/2; i++ {
@@ -41,6 +47,7 @@ func randString(l int) string {
 }
 
 func generate() []*A {
+	rand.Seed(42)
 	a := make([]*A, 0, 1000)
 	for i := 0; i < 1000; i++ {
 		a = append(a, &A{
@@ -63,7 +70,8 @@ type Serializer interface {
 
 func benchMarshal(b *testing.B, s Serializer) {
 	b.StopTimer()
-	data := generate()
+	//	data := generate()
+	data := commonData
 	b.ReportAllocs()
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
@@ -97,7 +105,8 @@ func cmpAliases(a, b []string) bool {
 
 func benchUnmarshal(b *testing.B, s Serializer) {
 	b.StopTimer()
-	data := generate()
+	//data := generate()
+	data := commonData
 	ser := make([][]byte, len(data))
 	for i, d := range data {
 		o := s.Marshal(d)
@@ -631,6 +640,7 @@ func BenchmarkProtobufUnmarshal(b *testing.B) {
 // github.com/golang/protobuf
 
 func generateProto() []*ProtoBufA {
+	rand.Seed(42)
 	a := make([]*ProtoBufA, 0, 1000)
 	for i := 0; i < 1000; i++ {
 		a = append(a, &ProtoBufA{
@@ -648,6 +658,7 @@ func generateProto() []*ProtoBufA {
 func BenchmarkGoprotobufMarshal(b *testing.B) {
 	b.StopTimer()
 	data := generateProto()
+	//data := commonData
 	b.ReportAllocs()
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
@@ -658,6 +669,7 @@ func BenchmarkGoprotobufMarshal(b *testing.B) {
 func BenchmarkGoprotobufUnmarshal(b *testing.B) {
 	b.StopTimer()
 	data := generateProto()
+	//data := commonData
 	ser := make([][]byte, len(data))
 	for i, d := range data {
 		ser[i], _ = proto.Marshal(d)
@@ -685,6 +697,7 @@ func BenchmarkGoprotobufUnmarshal(b *testing.B) {
 // github.com/gogo/protobuf/proto
 
 func generateGogoProto() []*GogoProtoBufA {
+	rand.Seed(42)
 	a := make([]*GogoProtoBufA, 0, 1000)
 	for i := 0; i < 1000; i++ {
 		a = append(a, &GogoProtoBufA{
@@ -702,6 +715,7 @@ func generateGogoProto() []*GogoProtoBufA {
 func BenchmarkGogoprotobufMarshal(b *testing.B) {
 	b.StopTimer()
 	data := generateGogoProto()
+	//data := commonData
 	b.ReportAllocs()
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
@@ -712,6 +726,7 @@ func BenchmarkGogoprotobufMarshal(b *testing.B) {
 func BenchmarkGogoprotobufUnmarshal(b *testing.B) {
 	b.StopTimer()
 	data := generateGogoProto()
+	//data := commonData
 	ser := make([][]byte, len(data))
 	for i, d := range data {
 		ser[i], _ = proto.Marshal(d)
@@ -739,6 +754,7 @@ func BenchmarkGogoprotobufUnmarshal(b *testing.B) {
 // github.com/andyleap/gencode
 
 func generateGencode() []*GencodeA {
+	rand.Seed(42)
 	a := make([]*GencodeA, 0, 1000)
 	for i := 0; i < 1000; i++ {
 		a = append(a, &GencodeA{
@@ -756,6 +772,7 @@ func generateGencode() []*GencodeA {
 func BenchmarkGencodeMarshal(b *testing.B) {
 	b.StopTimer()
 	data := generateGencode()
+	//data := commonData
 	b.ReportAllocs()
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
@@ -766,6 +783,8 @@ func BenchmarkGencodeMarshal(b *testing.B) {
 func BenchmarkGencodeUnmarshal(b *testing.B) {
 	b.StopTimer()
 	data := generateGencode()
+	//data := commonData
+
 	ser := make([][]byte, len(data))
 	for i, d := range data {
 		ser[i], _ = d.Marshal(nil)
@@ -796,7 +815,9 @@ func BenchmarkGencodeUnmarshal(b *testing.B) {
 // using the pointer s *CapNProtoSerializer directly.
 func benchUnmarshalCapn(b *testing.B, s *CapNProtoSerializer) {
 	b.StopTimer()
-	data := generate()
+	//data := generate()
+	data := commonData
+
 	ser := make([][]byte, len(data))
 	for i, d := range data {
 		o := s.Marshal(d)
@@ -828,33 +849,84 @@ func benchUnmarshalCapn(b *testing.B, s *CapNProtoSerializer) {
 
 // github.com/tinylib/msgp
 
-type MsgpSerializer struct{}
-
-func (m MsgpSerializer) Marshal(o interface{}) []byte {
-	out, _ := o.(msgp.Marshaler).MarshalMsg(nil)
-	return out
-}
-
-func (m MsgpSerializer) Unmarshal(d []byte, o interface{}) error {
-	_, err := o.(msgp.Unmarshaler).UnmarshalMsg(d)
-	return err
-}
-
-func (m MsgpSerializer) String() string { return "Msgp" }
-
 func BenchmarkMsgpMarshal(b *testing.B) {
-	benchMarshal(b, MsgpSerializer{})
+	b.StopTimer()
+	//data := generateZebraPack()
+	data := commonData
+
+	b.ReportAllocs()
+	_, err := data[rand.Intn(len(data))].MarshalMsg(nil)
+	if err != nil {
+		panic(err)
+	}
+	/*
+		// compute bytes written
+		writ := 0
+		for i := range data {
+			o, _ := data[i].MarshalMsg(nil)
+			writ += len(o)
+		}
+		b.SetBytes(int64(writ / len(data)))
+	*/
+	buf := make([]byte, 0, 100)
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		data[rand.Intn(len(data))].MarshalMsg(buf)
+	}
 }
 
 func BenchmarkMsgpUnmarshal(b *testing.B) {
-	benchUnmarshal(b, MsgpSerializer{})
+	b.StopTimer()
+	//	data := generateZebraPack()
+	data := commonData
+
+	ser := make([][]byte, len(data))
+	for i, d := range data {
+		ser[i], _ = d.MarshalMsg(nil)
+	}
+	o := &A{}
+	z := A{}
+	var n int
+	var err error
+	b.ResetTimer()
+	b.ReportAllocs()
+
+	/*
+		// compute bytes read
+		red := 0
+		for i := range ser {
+			red += len(ser[i])
+		}
+		b.SetBytes(int64(red / len(ser)))
+	*/
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		n = rand.Intn(len(ser))
+		*o = z // clear
+		_, err = o.UnmarshalMsg(ser[n])
+		if err != nil {
+			b.Fatalf("zebrapack failed to unmarshal: %s (%s)", err, ser[n])
+		}
+
+		// Validate unmarshalled data.
+		if validate != "" {
+			i := data[n]
+			correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay == i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
+			if !correct {
+				b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
+			}
+		}
+
+	}
 }
 
 // github.com/glycerine/zebrapack
 
 func BenchmarkZebraPackUnmarshal(b *testing.B) {
 	b.StopTimer()
-	data := generateZebraPack()
+	//	data := generateZebraPack()
+	data := commonData
+
 	ser := make([][]byte, len(data))
 	for i, d := range data {
 		ser[i], _ = d.ZMarshalMsg(nil)
@@ -913,7 +985,9 @@ func generateZebraPack() []*A {
 
 func BenchmarkZebraPackMarshal(b *testing.B) {
 	b.StopTimer()
-	data := generateZebraPack()
+	//data := generateZebraPack()
+	data := commonData
+
 	b.ReportAllocs()
 	_, err := data[rand.Intn(len(data))].ZMarshalMsg(nil)
 	if err != nil {
@@ -939,7 +1013,9 @@ func BenchmarkZebraPackMarshal(b *testing.B) {
 
 func BenchmarkMsgpGlycerineOmitEmptyUnmarshal(b *testing.B) {
 	b.StopTimer()
-	data := generateMsgpGlycerineOmitEmpty()
+//	data := generateMsgpGlycerineOmitEmpty()
+	data := commonData
+
 	ser := make([][]byte, len(data))
 	for i, d := range data {
 		ser[i], _ = d.MarshalMsg(nil)
@@ -989,7 +1065,9 @@ func generateMsgpGlycerineOmitEmpty() []*A {
 
 func BenchmarkMsgpGlycerineOmitEmptyMarshal(b *testing.B) {
 	b.StopTimer()
-	data := generateMsgpGlycerineOmitEmpty()
+//	data := generateMsgpGlycerineOmitEmpty()
+	data := commonData
+
 	b.ReportAllocs()
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {

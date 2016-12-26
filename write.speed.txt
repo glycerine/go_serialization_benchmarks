@@ -1,20 +1,20 @@
 PASS
-ok  	github.com/glycerine/go_serialization_benchmarks	65.490s
-BenchmarkZebraPackMarshal-4              	20000000	       117 ns/op	 502.84 MB/s	       0 B/op	       0 allocs/op
-BenchmarkGogoprotobufMarshal-4           	10000000	       144 ns/op	      64 B/op	       1 allocs/op
-BenchmarkGencodeMarshal-4                	10000000	       165 ns/op	      80 B/op	       2 allocs/op
-BenchmarkMsgpMarshal-4                   	10000000	       216 ns/op	     128 B/op	       1 allocs/op
-BenchmarkFlatbuffersMarshal-4            	 3000000	       385 ns/op	       0 B/op	       0 allocs/op
-BenchmarkCapNProtoMarshal-4              	 3000000	       476 ns/op	      56 B/op	       2 allocs/op
-BenchmarkGoprotobufMarshal-4             	 3000000	       502 ns/op	     312 B/op	       4 allocs/op
-BenchmarkProtobufMarshal-4               	 2000000	       904 ns/op	     200 B/op	       7 allocs/op
-BenchmarkHproseMarshal-4                 	 1000000	      1000 ns/op	     472 B/op	       8 allocs/op
-BenchmarkCapNProto2Marshal-4             	 1000000	      1013 ns/op	     436 B/op	       7 allocs/op
-BenchmarkGobMarshal-4                    	 1000000	      1121 ns/op	      48 B/op	       2 allocs/op
-BenchmarkBinaryMarshal-4                 	 1000000	      1426 ns/op	     256 B/op	      16 allocs/op
-BenchmarkVmihailencoMsgpackMarshal-4     	 1000000	      1702 ns/op	     368 B/op	       6 allocs/op
-BenchmarkXdrMarshal-4                    	 1000000	      1797 ns/op	     456 B/op	      21 allocs/op
-BenchmarkJsonMarshal-4                   	  500000	      2293 ns/op	     536 B/op	       6 allocs/op
-BenchmarkUgorjiCodecMsgpackMarshal-4     	  500000	      2494 ns/op	    2752 B/op	       8 allocs/op
-BenchmarkSerealMarshal-4                 	  500000	      2713 ns/op	     912 B/op	      21 allocs/op
-BenchmarkUgorjiCodecBincMarshal-4        	  500000	      2951 ns/op	    2784 B/op	       8 allocs/op
+ok  	github.com/glycerine/go_serialization_benchmarks	69.026s
+BenchmarkZebraPackMarshal-4              	10000000	       177 ns/op	 333.32 MB/s	       0 B/op	       0 allocs/op
+BenchmarkGencodeMarshal-4                	10000000	       209 ns/op	      80 B/op	       2 allocs/op
+BenchmarkMsgpMarshal-4                   	10000000	       219 ns/op	     128 B/op	       1 allocs/op
+BenchmarkGogoprotobufMarshal-4           	 5000000	       222 ns/op	      64 B/op	       1 allocs/op
+BenchmarkFlatbuffersMarshal-4            	 5000000	       354 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCapNProtoMarshal-4              	 3000000	       515 ns/op	      56 B/op	       2 allocs/op
+BenchmarkGoprotobufMarshal-4             	 2000000	       826 ns/op	     312 B/op	       4 allocs/op
+BenchmarkProtobufMarshal-4               	 2000000	       959 ns/op	     200 B/op	       7 allocs/op
+BenchmarkGobMarshal-4                    	 2000000	      1019 ns/op	      48 B/op	       2 allocs/op
+BenchmarkCapNProto2Marshal-4             	 1000000	      1031 ns/op	     436 B/op	       7 allocs/op
+BenchmarkHproseMarshal-4                 	 1000000	      1051 ns/op	     479 B/op	       8 allocs/op
+BenchmarkBinaryMarshal-4                 	 1000000	      1389 ns/op	     256 B/op	      16 allocs/op
+BenchmarkVmihailencoMsgpackMarshal-4     	 1000000	      1782 ns/op	     368 B/op	       6 allocs/op
+BenchmarkXdrMarshal-4                    	 1000000	      1796 ns/op	     455 B/op	      20 allocs/op
+BenchmarkJsonMarshal-4                   	  500000	      2274 ns/op	     536 B/op	       6 allocs/op
+BenchmarkUgorjiCodecMsgpackMarshal-4     	  500000	      2447 ns/op	    2752 B/op	       8 allocs/op
+BenchmarkSerealMarshal-4                 	  500000	      2729 ns/op	     912 B/op	      21 allocs/op
+BenchmarkUgorjiCodecBincMarshal-4        	  500000	      3190 ns/op	    2784 B/op	       8 allocs/op
