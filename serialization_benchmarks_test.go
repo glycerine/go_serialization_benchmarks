@@ -866,6 +866,15 @@ func BenchmarkZebraPackUnmarshal(b *testing.B) {
 	var err error
 	b.ResetTimer()
 	b.ReportAllocs()
+
+	// compute bytes read
+	red := 0
+	for i := range ser {
+		red += len(ser[i])
+	}
+	b.SetBytes(int64(red / len(ser)))
+
+	b.SetBytes(int64(len(ser[0])))
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		n = rand.Intn(len(ser))
@@ -906,9 +915,21 @@ func BenchmarkZebraPackMarshal(b *testing.B) {
 	b.StopTimer()
 	data := generateZebraPack()
 	b.ReportAllocs()
+	_, err := data[rand.Intn(len(data))].ZMarshalMsg(nil)
+	if err != nil {
+		panic(err)
+	}
+	// compute bytes written
+	writ := 0
+	for i := range data {
+		o, _ := data[i].ZMarshalMsg(nil)
+		writ += len(o)
+	}
+	b.SetBytes(int64(writ / len(data)))
+	buf := make([]byte, 0, 100)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		data[rand.Intn(len(data))].ZMarshalMsg(nil)
+		data[rand.Intn(len(data))].ZMarshalMsg(buf)
 		//proto.Marshal(data[rand.Intn(len(data))])
 	}
 }
