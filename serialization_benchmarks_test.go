@@ -850,14 +850,14 @@ func BenchmarkMsgpUnmarshal(b *testing.B) {
 	benchUnmarshal(b, MsgpSerializer{})
 }
 
-// github.com/tinylib/msgp - ZebraPack variation
+// github.com/glycerine/zebrapack
 
 func BenchmarkZebraPackUnmarshal(b *testing.B) {
 	b.StopTimer()
 	data := generateZebraPack()
 	ser := make([][]byte, len(data))
 	for i, d := range data {
-		ser[i], _ = d.ZebraPackMarshalMsg(nil)
+		ser[i], _ = d.ZMarshalMsg(nil)
 		//ser[i], _ = proto.Marshal(d)
 	}
 	o := &A{}
@@ -870,20 +870,20 @@ func BenchmarkZebraPackUnmarshal(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		n = rand.Intn(len(ser))
 		*o = z // clear
-		_, err = o.ZebraPackUnmarshalMsg(ser[n])
+		_, err = o.ZUnmarshalMsg(ser[n])
 		if err != nil {
 			b.Fatalf("zebrapack failed to unmarshal: %s (%s)", err, ser[n])
 		}
-		/*
-			// Validate unmarshalled data.
-			if validate != "" {
-				i := data[n]
-				correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay == i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
-				if !correct {
-					b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
-				}
+
+		// Validate unmarshalled data.
+		if validate != "" {
+			i := data[n]
+			correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay == i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
+			if !correct {
+				b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
 			}
-		*/
+		}
+
 	}
 }
 
@@ -908,7 +908,72 @@ func BenchmarkZebraPackMarshal(b *testing.B) {
 	b.ReportAllocs()
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		data[rand.Intn(len(data))].ZebraPackMarshalMsg(nil)
+		data[rand.Intn(len(data))].ZMarshalMsg(nil)
 		//proto.Marshal(data[rand.Intn(len(data))])
 	}
 }
+
+/*
+// msgp - glycerine with omitempty
+
+func BenchmarkMsgpGlycerineOmitEmptyUnmarshal(b *testing.B) {
+	b.StopTimer()
+	data := generateMsgpGlycerineOmitEmpty()
+	ser := make([][]byte, len(data))
+	for i, d := range data {
+		ser[i], _ = d.MarshalMsg(nil)
+		//ser[i], _ = proto.Marshal(d)
+	}
+	o := &A{}
+	z := A{}
+	var n int
+	var err error
+	b.ResetTimer()
+	b.ReportAllocs()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		n = rand.Intn(len(ser))
+		*o = z // clear
+		_, err = o.UnmarshalMsg(ser[n])
+		if err != nil {
+			b.Fatalf("zebrapack failed to unmarshal: %s (%s)", err, ser[n])
+		}
+
+		// Validate unmarshalled data.
+		//	if validate != "" {
+		//		i := data[n]
+		//		correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay == i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
+		//		if !correct {
+		//			b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
+		//		}
+		//	}
+
+	}
+}
+
+func generateMsgpGlycerineOmitEmpty() []*A {
+	a := make([]*A, 0, 1000)
+	for i := 0; i < 1000; i++ {
+		a = append(a, &A{
+			Name:     randString(16),
+			BirthDay: time.Now(),
+			Phone:    randString(10),
+			Siblings: rand.Intn(5),
+			Spouse:   rand.Intn(2) == 1,
+			Money:    rand.Float64(),
+		})
+	}
+	return a
+}
+
+func BenchmarkMsgpGlycerineOmitEmptyMarshal(b *testing.B) {
+	b.StopTimer()
+	data := generateMsgpGlycerineOmitEmpty()
+	b.ReportAllocs()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		data[rand.Intn(len(data))].MarshalMsg(nil)
+		//proto.Marshal(data[rand.Intn(len(data))])
+	}
+}
+*/

@@ -1,4 +1,4 @@
-all: FlatBufferA.go msgp_gen.go structdef-gogo.pb.go structdef.pb.go vitess_test.go structdef.capnp.go structdef.capnp2.go gencode.schema.gen.go
+all: FlatBufferA.go msgp_gen.go structdef-gogo.pb.go structdef.pb.go structdef.capnp.go structdef.capnp2.go gencode.schema.gen.go zebrapack_gen.go
 
 FlatBufferA.go: flatbuffers-structdef.fbs
 	flatc -g flatbuffers-structdef.fbs
@@ -6,8 +6,11 @@ FlatBufferA.go: flatbuffers-structdef.fbs
 	rmdir flatbuffersmodels
 	sed -i '' 's/flatbuffersmodels/goserbench/' FlatBufferA.go
 
-msgp_gen.go: structdef.go
+msgp_gen.go zebrapack_gen.go: structdef.go
 	go generate
+	perl -pi -e 's/MarshalMsg/ZMarshalMsg/g' zebrapack_gen.go
+	perl -pi -e 's/Msgsize/ZMsgsize/g' zebrapack_gen.go
+	perl -pi -e 's/UnmarshalMsg/ZUnmarshalMsg/g' zebrapack_gen.go
 
 structdef-gogo.pb.go: structdef-gogo.proto
 	protoc --gogo_out=. -I. -I${GOPATH}/src  -I${GOPATH}/src/github.com/gogo/protobuf/protobuf structdef-gogo.proto
@@ -37,8 +40,8 @@ install:
 	go get -u github.com/gogo/protobuf/protoc-gen-gogo
 	go get -u github.com/gogo/protobuf/gogoproto
 	go get -u github.com/golang/protobuf/protoc-gen-go
-	go get -u github.com/tinylib/msgp
-	go get -u github.com/andyleap/gencode
+	#go get -u github.com/tinylib/msgp
+	#go get -u github.com/andyleap/gencode
 
 	go get -u github.com/DeDiS/protobuf
 	go get -u github.com/Sereal/Sereal/Go/sereal
@@ -46,8 +49,13 @@ install:
 	go get -u github.com/davecgh/go-xdr/xdr
 	go get -u github.com/gogo/protobuf/proto
 	go get -u github.com/google/flatbuffers/go
-	go get -u github.com/tinylib/msgp/msgp
+	#go get -u github.com/tinylib/msgp/msgp
 	go get -u github.com/ugorji/go/codec
 	go get -u gopkg.in/vmihailenco/msgpack.v2
 	go get -u github.com/golang/protobuf/proto
 	go get -u github.com/hprose/hprose-go/io
+
+benchit:
+	go test -v -bench=. -run - &> res
+	cat res|grep Un | sort -nk 3 > read.speed.txt
+	cat res|grep -v Un | sort -nk 3 > write.speed.txt
