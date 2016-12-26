@@ -58,8 +58,8 @@ Results with Go 1.8beta2 on a 3.1 GHz Intel Core i7 (MacBook Pro 13"):
 * sorted by read speed
 
 ```
-benchmark                                       iter                   time/iter             bytes alloc       allocs
----------                                       ----                   ---------             -----------       ------
+benchmark                                       iter           time/iter         bytes alloc       allocs
+---------                                       ----           ---------         -----------       ------
   BenchmarkGencodeUnmarshal-4              	10000000	       207 ns/op	     112 B/op	       3 allocs/op
 * BenchmarkZebraPackUnmarshal-4            	10000000	       222 ns/op	       0 B/op	       0 allocs/op
   BenchmarkGogoprotobufUnmarshal-4         	 5000000	       253 ns/op	     112 B/op	       3 allocs/op
@@ -84,8 +84,8 @@ benchmark                                       iter                   time/iter
 
 
 ```
-benchmark                                       iter                   time/iter              bytes alloc      allocs
----------                                       ----                   ---------              -----------      ------
+benchmark                                       iter           time/iter          bytes alloc      allocs
+---------                                       ----           ---------          -----------      ------
   BenchmarkGogoprotobufMarshal-4           	10000000	       151 ns/op	      64 B/op	       1 allocs/op
 * BenchmarkZebraPackMarshal-4              	10000000	       151 ns/op	      80 B/op	       1 allocs/op
   BenchmarkGencodeMarshal-4                	10000000	       168 ns/op	      80 B/op	       2 allocs/op
