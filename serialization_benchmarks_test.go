@@ -1000,7 +1000,7 @@ func BenchmarkZebraPackMarshal(b *testing.B) {
 		writ += len(o)
 	}
 	b.SetBytes(int64(writ / len(data)))
-	buf := make([]byte, 0, 100)
+	buf := make([]byte, 0, 512)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		data[rand.Intn(len(data))].ZMarshalMsg(buf)
