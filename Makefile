@@ -13,7 +13,7 @@ msgp_gen.go zebrapack_gen.go: structdef.go
 	perl -pi -e 's/UnmarshalMsg/ZUnmarshalMsg/g' zebrapack_gen.go
 
 structdef-gogo.pb.go: structdef-gogo.proto
-	protoc --gogo_out=. -I. -I${GOPATH}/src  -I${GOPATH}/src/github.com/gogo/protobuf/protobuf structdef-gogo.proto
+	protoc --gogofaster_out=. -I. -I${GOPATH}/src  -I${GOPATH}/src/github.com/gogo/protobuf/protobuf structdef-gogo.proto
 
 structdef.pb.go: structdef.proto
 	protoc --go_out=. structdef.proto
@@ -37,7 +37,7 @@ clean:
 
 .PHONY: install
 install:
-	go get -u github.com/gogo/protobuf/protoc-gen-gogo
+	go get -u github.com/gogo/protobuf/protoc-gen-gogofaster
 	go get -u github.com/gogo/protobuf/gogoproto
 	go get -u github.com/golang/protobuf/protoc-gen-go
 	#go get -u github.com/tinylib/msgp
