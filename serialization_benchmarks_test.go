@@ -382,7 +382,7 @@ type FlatBufferSerializer struct {
 	builder *flatbuffers.Builder
 }
 
-var fbSer = &FlagBufferSerializer{flatbuffers.NewBuilder(0)}
+var fbSer = &FlatBufferSerializer{flatbuffers.NewBuilder(0)}
 
 func BenchmarkFlatBufferMarshal(b *testing.B) {
 	b.StopTimer()
@@ -444,7 +444,7 @@ func BenchmarkFlatBuffersUnmarshal(b *testing.B) {
 
 	ser := make([][]byte, len(data))
 	for i, d := range data {
-		o := s.Marshal(d)
+		o := fbSer.Marshal(d)
 		t := make([]byte, len(o))
 		copy(t, o)
 		ser[i] = t
@@ -458,7 +458,7 @@ func BenchmarkFlatBuffersUnmarshal(b *testing.B) {
 		n := rand.Intn(len(ser))
 		err := fbUn.Unmarshal(ser[n], o)
 		if err != nil {
-			b.Fatalf("%s failed to unmarshal: %s (%s)", s, err, ser[n])
+			b.Fatalf("%s failed to unmarshal: %s (%s)", fbUn, err, ser[n])
 		}
 		// Validate unmarshalled data.
 		if validate != "" {
