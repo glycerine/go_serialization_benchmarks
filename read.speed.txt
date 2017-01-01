@@ -1,18 +1,18 @@
-BenchmarkCapNProtoUnmarshal-4            	10000000	       206 ns/op	       0 B/op	       0 allocs/op
-BenchmarkZebraPackUnmarshal-4            	10000000	       232 ns/op	 266.86 MB/s	       0 B/op	       0 allocs/op
-BenchmarkGencodeUnmarshal-4              	10000000	       243 ns/op	     112 B/op	       3 allocs/op
-BenchmarkGogoprotobufUnmarshal-4         	 5000000	       257 ns/op	     112 B/op	       3 allocs/op
-BenchmarkFlatBuffersUnmarshal-4          	 5000000	       270 ns/op	     112 B/op	       3 allocs/op
-BenchmarkMsgpUnmarshal-4                 	 5000000	       295 ns/op	      32 B/op	       2 allocs/op
-BenchmarkGoprotobufUnmarshal-4           	 2000000	       678 ns/op	     432 B/op	       9 allocs/op
-BenchmarkProtobufUnmarshal-4             	 2000000	       734 ns/op	     192 B/op	      10 allocs/op
-BenchmarkGobUnmarshal-4                  	 2000000	       916 ns/op	     112 B/op	       3 allocs/op
-BenchmarkHproseUnmarshal-4               	 1000000	      1044 ns/op	     320 B/op	      10 allocs/op
-BenchmarkCapNProto2Unmarshal-4           	 1000000	      1372 ns/op	     608 B/op	      12 allocs/op
-BenchmarkBinaryUnmarshal-4               	 1000000	      1581 ns/op	     336 B/op	      22 allocs/op
-BenchmarkXdrUnmarshal-4                  	 1000000	      1596 ns/op	     240 B/op	      11 allocs/op
-BenchmarkVmihailencoMsgpackUnmarshal-4   	 1000000	      2110 ns/op	     384 B/op	      13 allocs/op
-BenchmarkUgorjiCodecBincUnmarshal-4      	  500000	      2685 ns/op	    3168 B/op	       9 allocs/op
-BenchmarkUgorjiCodecMsgpackUnmarshal-4   	  500000	      3244 ns/op	    3008 B/op	       6 allocs/op
-BenchmarkSerealUnmarshal-4               	  500000	      3289 ns/op	    1008 B/op	      34 allocs/op
-BenchmarkJsonUnmarshal-4                 	  300000	      4423 ns/op	     495 B/op	       8 allocs/op
+BenchmarkGencodeUnmarshal-4              	10000000	       198 ns/op	     112 B/op	       3 allocs/op
+BenchmarkZebraPackUnmarshal-4            	10000000	       216 ns/op	 272.37 MB/s	       0 B/op	       0 allocs/op
+BenchmarkCapNProtoUnmarshal-4            	10000000	       225 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGogoprotobufUnmarshal-4         	 5000000	       247 ns/op	     112 B/op	       3 allocs/op
+BenchmarkFlatBuffersUnmarshal-4          	 5000000	       268 ns/op	     112 B/op	       3 allocs/op
+BenchmarkMsgpUnmarshal-4                 	 5000000	       286 ns/op	      32 B/op	       2 allocs/op
+BenchmarkProtobufUnmarshal-4             	 2000000	       670 ns/op	     192 B/op	      10 allocs/op
+BenchmarkGoprotobufUnmarshal-4           	 2000000	       706 ns/op	     432 B/op	       9 allocs/op
+BenchmarkGobUnmarshal-4                  	 2000000	       901 ns/op	     112 B/op	       3 allocs/op
+BenchmarkHproseUnmarshal-4               	 1000000	      1083 ns/op	     320 B/op	      10 allocs/op
+BenchmarkCapNProto2Unmarshal-4           	 1000000	      1420 ns/op	     608 B/op	      12 allocs/op
+BenchmarkXdrUnmarshal-4                  	 1000000	      1691 ns/op	     239 B/op	      11 allocs/op
+BenchmarkBinaryUnmarshal-4               	 1000000	      1910 ns/op	     336 B/op	      22 allocs/op
+BenchmarkVmihailencoMsgpackUnmarshal-4   	 1000000	      2074 ns/op	     384 B/op	      13 allocs/op
+BenchmarkUgorjiCodecMsgpackUnmarshal-4   	  500000	      2614 ns/op	    3008 B/op	       6 allocs/op
+BenchmarkUgorjiCodecBincUnmarshal-4      	  500000	      2869 ns/op	    3168 B/op	       9 allocs/op
+BenchmarkSerealUnmarshal-4               	  500000	      3267 ns/op	    1008 B/op	      34 allocs/op
+BenchmarkJsonUnmarshal-4                 	  200000	      5702 ns/op	     495 B/op	       8 allocs/op

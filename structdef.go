@@ -6,7 +6,7 @@ import (
 
 //go:generate msgp -o msgp_gen.go -io=false -tests=false
 
-//go:generate zebrapack -fast-strings -o zebrapack_gen.go -io=false -tests=false
+//go:generate zebrapack -fast-strings -no-rtti -o zebrapack_gen.go -io=false -tests=false
 
 type A struct {
 	Name     string    `zid:"0"`
