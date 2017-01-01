@@ -894,7 +894,7 @@ func BenchmarkMsgpMarshal(b *testing.B) {
 	//data := generateZebraPack()
 	data := commonData
 
-	b.ReportAllocs()
+	//b.ReportAllocs()
 	_, err := data[rand.Intn(len(data))].MarshalMsg(nil)
 	if err != nil {
 		panic(err)
@@ -929,7 +929,7 @@ func BenchmarkMsgpUnmarshal(b *testing.B) {
 	var n int
 	var err error
 	b.ResetTimer()
-	b.ReportAllocs()
+	//b.ReportAllocs()
 
 	/*
 		// compute bytes read

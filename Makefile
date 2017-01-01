@@ -56,6 +56,6 @@ install:
 	go get -u github.com/hprose/hprose-go/io
 
 benchit:
-	go test -v -bench=. -run - &> res
+	go test -v -bench=. -benchtime 1s -timeout 60m -run - |tee res
 	cat res|grep Un | sort -nk 3 > read.speed.txt
 	cat res|grep -v Un | sort -nk 3 > write.speed.txt

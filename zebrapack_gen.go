@@ -104,60 +104,60 @@ func (z *A) ZUnmarshalMsgWithCfg(bts []byte, cfg *msgp.RuntimeConfig) (o []byte,
 
 	var field []byte
 	_ = field
-	const maxFields0znni = 6
+	const maxFields0ztjs = 6
 
 	// -- templateZUnmarshalMsgZid starts here--
-	var totalEncodedFields0znni uint32
+	var totalEncodedFields0ztjs uint32
 	if !nbs.AlwaysNil {
-		totalEncodedFields0znni, bts, err = nbs.ReadMapHeaderBytes(bts)
+		totalEncodedFields0ztjs, bts, err = nbs.ReadMapHeaderBytes(bts)
 		if err != nil {
 			panic(err)
 			return
 		}
 	}
-	encodedFieldsLeft0znni := totalEncodedFields0znni
-	missingFieldsLeft0znni := maxFields0znni - totalEncodedFields0znni
+	encodedFieldsLeft0ztjs := totalEncodedFields0ztjs
+	missingFieldsLeft0ztjs := maxFields0ztjs - totalEncodedFields0ztjs
 
-	var nextMiss0znni int = -1
-	var found0znni [maxFields0znni]bool
-	var curField0znni int
+	var nextMiss0ztjs int = -1
+	var found0ztjs [maxFields0ztjs]bool
+	var curField0ztjs int
 
-doneWithStruct0znni:
+doneWithStruct0ztjs:
 	// First fill all the encoded fields, then
 	// treat the remaining, missing fields, as Nil.
-	for encodedFieldsLeft0znni > 0 || missingFieldsLeft0znni > 0 {
-		//fmt.Printf("encodedFieldsLeft: %v, missingFieldsLeft: %v, found: '%v', fields: '%#v'\n", encodedFieldsLeft0znni, missingFieldsLeft0znni, msgp.ShowFound(found0znni[:]), unmarshalMsgFieldOrder0znni)
-		if encodedFieldsLeft0znni > 0 {
-			encodedFieldsLeft0znni--
-			curField0znni, bts, err = nbs.ReadIntBytes(bts)
+	for encodedFieldsLeft0ztjs > 0 || missingFieldsLeft0ztjs > 0 {
+		//fmt.Printf("encodedFieldsLeft: %v, missingFieldsLeft: %v, found: '%v', fields: '%#v'\n", encodedFieldsLeft0ztjs, missingFieldsLeft0ztjs, msgp.ShowFound(found0ztjs[:]), unmarshalMsgFieldOrder0ztjs)
+		if encodedFieldsLeft0ztjs > 0 {
+			encodedFieldsLeft0ztjs--
+			curField0ztjs, bts, err = nbs.ReadIntBytes(bts)
 			if err != nil {
 				panic(err)
 				return
 			}
 		} else {
 			//missing fields need handling
-			if nextMiss0znni < 0 {
+			if nextMiss0ztjs < 0 {
 				// set bts to contain just mnil (0xc0)
 				bts = nbs.PushAlwaysNil(bts)
-				nextMiss0znni = 0
+				nextMiss0ztjs = 0
 			}
-			for nextMiss0znni < maxFields0znni && (found0znni[nextMiss0znni] || unmarshalMsgFieldSkip0znni[nextMiss0znni]) {
-				nextMiss0znni++
+			for nextMiss0ztjs < maxFields0ztjs && (found0ztjs[nextMiss0ztjs] || unmarshalMsgFieldSkip0ztjs[nextMiss0ztjs]) {
+				nextMiss0ztjs++
 			}
-			if nextMiss0znni == maxFields0znni {
+			if nextMiss0ztjs == maxFields0ztjs {
 				// filled all the empty fields!
-				break doneWithStruct0znni
+				break doneWithStruct0ztjs
 			}
-			missingFieldsLeft0znni--
-			curField0znni = nextMiss0znni
+			missingFieldsLeft0ztjs--
+			curField0ztjs = nextMiss0ztjs
 		}
-		//fmt.Printf("switching on curField: '%v'\n", curField0znni)
-		switch curField0znni {
+		//fmt.Printf("switching on curField: '%v'\n", curField0ztjs)
+		switch curField0ztjs {
 		// -- templateZUnmarshalMsgZid ends here --
 
 		case 0:
 			// zid 0 for "Name"
-			found0znni[0] = true
+			found0ztjs[0] = true
 			z.Name, bts, err = nbs.ReadStringBytes(bts)
 
 			if err != nil {
@@ -165,7 +165,7 @@ doneWithStruct0znni:
 			}
 		case 1:
 			// zid 1 for "BirthDay"
-			found0znni[1] = true
+			found0ztjs[1] = true
 			z.BirthDay, bts, err = nbs.ReadTimeBytes(bts)
 
 			if err != nil {
@@ -173,7 +173,7 @@ doneWithStruct0znni:
 			}
 		case 2:
 			// zid 2 for "Phone"
-			found0znni[2] = true
+			found0ztjs[2] = true
 			z.Phone, bts, err = nbs.ReadStringBytes(bts)
 
 			if err != nil {
@@ -181,7 +181,7 @@ doneWithStruct0znni:
 			}
 		case 3:
 			// zid 3 for "Siblings"
-			found0znni[3] = true
+			found0ztjs[3] = true
 			z.Siblings, bts, err = nbs.ReadIntBytes(bts)
 
 			if err != nil {
@@ -189,7 +189,7 @@ doneWithStruct0znni:
 			}
 		case 4:
 			// zid 4 for "Spouse"
-			found0znni[4] = true
+			found0ztjs[4] = true
 			z.Spouse, bts, err = nbs.ReadBoolBytes(bts)
 
 			if err != nil {
@@ -197,7 +197,7 @@ doneWithStruct0znni:
 			}
 		case 5:
 			// zid 5 for "Money"
-			found0znni[5] = true
+			found0ztjs[5] = true
 			z.Money, bts, err = nbs.ReadFloat64Bytes(bts)
 
 			if err != nil {
@@ -210,7 +210,7 @@ doneWithStruct0znni:
 			}
 		}
 	}
-	if nextMiss0znni != -1 {
+	if nextMiss0ztjs != -1 {
 		bts = nbs.PopAlwaysNil()
 	}
 
@@ -222,9 +222,9 @@ doneWithStruct0znni:
 }
 
 // fields of A
-var unmarshalMsgFieldOrder0znni = []string{"Name", "BirthDay", "Phone", "Siblings", "Spouse", "Money"}
+var unmarshalMsgFieldOrder0ztjs = []string{"Name", "BirthDay", "Phone", "Siblings", "Spouse", "Money"}
 
-var unmarshalMsgFieldSkip0znni = []bool{false, false, false, false, false, false}
+var unmarshalMsgFieldSkip0ztjs = []bool{false, false, false, false, false, false}
 
 // ZMsgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *A) ZMsgsize() (s int) {
