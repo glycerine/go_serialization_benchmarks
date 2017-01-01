@@ -26,19 +26,25 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+// A compilation error at this line likely means your copy of the
+// proto package needs to be updated.
+const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
+
 type GogoProtoBufA struct {
-	Name             string  `protobuf:"bytes,1,req,name=name" json:"name"`
-	BirthDay         int64   `protobuf:"varint,2,req,name=birthDay" json:"birthDay"`
-	Phone            string  `protobuf:"bytes,3,req,name=phone" json:"phone"`
-	Siblings         int32   `protobuf:"varint,4,req,name=siblings" json:"siblings"`
-	Spouse           bool    `protobuf:"varint,5,req,name=spouse" json:"spouse"`
-	Money            float64 `protobuf:"fixed64,6,req,name=money" json:"money"`
-	XXX_unrecognized []byte  `json:"-"`
+	Name     string  `protobuf:"bytes,1,req,name=name" json:"name"`
+	BirthDay int64   `protobuf:"varint,2,req,name=birthDay" json:"birthDay"`
+	Phone    string  `protobuf:"bytes,3,req,name=phone" json:"phone"`
+	Siblings int32   `protobuf:"varint,4,req,name=siblings" json:"siblings"`
+	Spouse   bool    `protobuf:"varint,5,req,name=spouse" json:"spouse"`
+	Money    float64 `protobuf:"fixed64,6,req,name=money" json:"money"`
 }
 
-func (m *GogoProtoBufA) Reset()         { *m = GogoProtoBufA{} }
-func (m *GogoProtoBufA) String() string { return proto.CompactTextString(m) }
-func (*GogoProtoBufA) ProtoMessage()    {}
+func (m *GogoProtoBufA) Reset()                    { *m = GogoProtoBufA{} }
+func (m *GogoProtoBufA) String() string            { return proto.CompactTextString(m) }
+func (*GogoProtoBufA) ProtoMessage()               {}
+func (*GogoProtoBufA) Descriptor() ([]byte, []int) { return fileDescriptorStructdefGogo, []int{0} }
 
 func (m *GogoProtoBufA) GetName() string {
 	if m != nil {
@@ -85,77 +91,74 @@ func (m *GogoProtoBufA) GetMoney() float64 {
 func init() {
 	proto.RegisterType((*GogoProtoBufA)(nil), "goserbench.GogoProtoBufA")
 }
-func (m *GogoProtoBufA) Marshal() (data []byte, err error) {
+func (m *GogoProtoBufA) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
-	data = make([]byte, size)
-	n, err := m.MarshalTo(data)
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
-	return data[:n], nil
+	return dAtA[:n], nil
 }
 
-func (m *GogoProtoBufA) MarshalTo(data []byte) (int, error) {
+func (m *GogoProtoBufA) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
 	_ = l
-	data[i] = 0xa
+	dAtA[i] = 0xa
 	i++
-	i = encodeVarintStructdefGogo(data, i, uint64(len(m.Name)))
-	i += copy(data[i:], m.Name)
-	data[i] = 0x10
+	i = encodeVarintStructdefGogo(dAtA, i, uint64(len(m.Name)))
+	i += copy(dAtA[i:], m.Name)
+	dAtA[i] = 0x10
 	i++
-	i = encodeVarintStructdefGogo(data, i, uint64(m.BirthDay))
-	data[i] = 0x1a
+	i = encodeVarintStructdefGogo(dAtA, i, uint64(m.BirthDay))
+	dAtA[i] = 0x1a
 	i++
-	i = encodeVarintStructdefGogo(data, i, uint64(len(m.Phone)))
-	i += copy(data[i:], m.Phone)
-	data[i] = 0x20
+	i = encodeVarintStructdefGogo(dAtA, i, uint64(len(m.Phone)))
+	i += copy(dAtA[i:], m.Phone)
+	dAtA[i] = 0x20
 	i++
-	i = encodeVarintStructdefGogo(data, i, uint64(m.Siblings))
-	data[i] = 0x28
+	i = encodeVarintStructdefGogo(dAtA, i, uint64(m.Siblings))
+	dAtA[i] = 0x28
 	i++
 	if m.Spouse {
-		data[i] = 1
+		dAtA[i] = 1
 	} else {
-		data[i] = 0
+		dAtA[i] = 0
 	}
 	i++
-	data[i] = 0x31
+	dAtA[i] = 0x31
 	i++
-	i = encodeFixed64StructdefGogo(data, i, uint64(math.Float64bits(m.Money)))
-	if m.XXX_unrecognized != nil {
-		i += copy(data[i:], m.XXX_unrecognized)
-	}
+	i = encodeFixed64StructdefGogo(dAtA, i, uint64(math.Float64bits(float64(m.Money))))
 	return i, nil
 }
 
-func encodeFixed64StructdefGogo(data []byte, offset int, v uint64) int {
-	data[offset] = uint8(v)
-	data[offset+1] = uint8(v >> 8)
-	data[offset+2] = uint8(v >> 16)
-	data[offset+3] = uint8(v >> 24)
-	data[offset+4] = uint8(v >> 32)
-	data[offset+5] = uint8(v >> 40)
-	data[offset+6] = uint8(v >> 48)
-	data[offset+7] = uint8(v >> 56)
+func encodeFixed64StructdefGogo(dAtA []byte, offset int, v uint64) int {
+	dAtA[offset] = uint8(v)
+	dAtA[offset+1] = uint8(v >> 8)
+	dAtA[offset+2] = uint8(v >> 16)
+	dAtA[offset+3] = uint8(v >> 24)
+	dAtA[offset+4] = uint8(v >> 32)
+	dAtA[offset+5] = uint8(v >> 40)
+	dAtA[offset+6] = uint8(v >> 48)
+	dAtA[offset+7] = uint8(v >> 56)
 	return offset + 8
 }
-func encodeFixed32StructdefGogo(data []byte, offset int, v uint32) int {
-	data[offset] = uint8(v)
-	data[offset+1] = uint8(v >> 8)
-	data[offset+2] = uint8(v >> 16)
-	data[offset+3] = uint8(v >> 24)
+func encodeFixed32StructdefGogo(dAtA []byte, offset int, v uint32) int {
+	dAtA[offset] = uint8(v)
+	dAtA[offset+1] = uint8(v >> 8)
+	dAtA[offset+2] = uint8(v >> 16)
+	dAtA[offset+3] = uint8(v >> 24)
 	return offset + 4
 }
-func encodeVarintStructdefGogo(data []byte, offset int, v uint64) int {
+func encodeVarintStructdefGogo(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
-		data[offset] = uint8(v&0x7f | 0x80)
+		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
-	data[offset] = uint8(v)
+	dAtA[offset] = uint8(v)
 	return offset + 1
 }
 func (m *GogoProtoBufA) Size() (n int) {
@@ -169,9 +172,6 @@ func (m *GogoProtoBufA) Size() (n int) {
 	n += 1 + sovStructdefGogo(uint64(m.Siblings))
 	n += 2
 	n += 9
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -188,9 +188,9 @@ func sovStructdefGogo(x uint64) (n int) {
 func sozStructdefGogo(x uint64) (n int) {
 	return sovStructdefGogo(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *GogoProtoBufA) Unmarshal(data []byte) error {
+func (m *GogoProtoBufA) Unmarshal(dAtA []byte) error {
 	var hasFields [1]uint64
-	l := len(data)
+	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
 		preIndex := iNdEx
@@ -202,7 +202,7 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := data[iNdEx]
+			b := dAtA[iNdEx]
 			iNdEx++
 			wire |= (uint64(b) & 0x7F) << shift
 			if b < 0x80 {
@@ -230,7 +230,7 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				stringLen |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -245,7 +245,7 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Name = string(data[iNdEx:postIndex])
+			m.Name = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000001)
 		case 2:
@@ -260,7 +260,7 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				m.BirthDay |= (int64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -280,7 +280,7 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				stringLen |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -295,7 +295,7 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Phone = string(data[iNdEx:postIndex])
+			m.Phone = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000004)
 		case 4:
@@ -310,7 +310,7 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				m.Siblings |= (int32(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -330,7 +330,7 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				v |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -348,19 +348,19 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			iNdEx += 8
-			v = uint64(data[iNdEx-8])
-			v |= uint64(data[iNdEx-7]) << 8
-			v |= uint64(data[iNdEx-6]) << 16
-			v |= uint64(data[iNdEx-5]) << 24
-			v |= uint64(data[iNdEx-4]) << 32
-			v |= uint64(data[iNdEx-3]) << 40
-			v |= uint64(data[iNdEx-2]) << 48
-			v |= uint64(data[iNdEx-1]) << 56
+			v = uint64(dAtA[iNdEx-8])
+			v |= uint64(dAtA[iNdEx-7]) << 8
+			v |= uint64(dAtA[iNdEx-6]) << 16
+			v |= uint64(dAtA[iNdEx-5]) << 24
+			v |= uint64(dAtA[iNdEx-4]) << 32
+			v |= uint64(dAtA[iNdEx-3]) << 40
+			v |= uint64(dAtA[iNdEx-2]) << 48
+			v |= uint64(dAtA[iNdEx-1]) << 56
 			m.Money = float64(math.Float64frombits(v))
 			hasFields[0] |= uint64(0x00000020)
 		default:
 			iNdEx = preIndex
-			skippy, err := skipStructdefGogo(data[iNdEx:])
+			skippy, err := skipStructdefGogo(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
@@ -370,7 +370,6 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, data[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -398,8 +397,8 @@ func (m *GogoProtoBufA) Unmarshal(data []byte) error {
 	}
 	return nil
 }
-func skipStructdefGogo(data []byte) (n int, err error) {
-	l := len(data)
+func skipStructdefGogo(dAtA []byte) (n int, err error) {
+	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
 		var wire uint64
@@ -410,7 +409,7 @@ func skipStructdefGogo(data []byte) (n int, err error) {
 			if iNdEx >= l {
 				return 0, io.ErrUnexpectedEOF
 			}
-			b := data[iNdEx]
+			b := dAtA[iNdEx]
 			iNdEx++
 			wire |= (uint64(b) & 0x7F) << shift
 			if b < 0x80 {
@@ -428,7 +427,7 @@ func skipStructdefGogo(data []byte) (n int, err error) {
 					return 0, io.ErrUnexpectedEOF
 				}
 				iNdEx++
-				if data[iNdEx-1] < 0x80 {
+				if dAtA[iNdEx-1] < 0x80 {
 					break
 				}
 			}
@@ -445,7 +444,7 @@ func skipStructdefGogo(data []byte) (n int, err error) {
 				if iNdEx >= l {
 					return 0, io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				length |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -468,7 +467,7 @@ func skipStructdefGogo(data []byte) (n int, err error) {
 					if iNdEx >= l {
 						return 0, io.ErrUnexpectedEOF
 					}
-					b := data[iNdEx]
+					b := dAtA[iNdEx]
 					iNdEx++
 					innerWire |= (uint64(b) & 0x7F) << shift
 					if b < 0x80 {
@@ -479,7 +478,7 @@ func skipStructdefGogo(data []byte) (n int, err error) {
 				if innerWireType == 4 {
 					break
 				}
-				next, err := skipStructdefGogo(data[start:])
+				next, err := skipStructdefGogo(dAtA[start:])
 				if err != nil {
 					return 0, err
 				}
@@ -502,3 +501,24 @@ var (
 	ErrInvalidLengthStructdefGogo = fmt.Errorf("proto: negative length found during unmarshaling")
 	ErrIntOverflowStructdefGogo   = fmt.Errorf("proto: integer overflow")
 )
+
+func init() { proto.RegisterFile("structdef-gogo.proto", fileDescriptorStructdefGogo) }
+
+var fileDescriptorStructdefGogo = []byte{
+	// 233 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x8c, 0x4f, 0x4a, 0xc4, 0x30,
+	0x1c, 0x85, 0x27, 0x99, 0x76, 0x18, 0x03, 0x82, 0x04, 0x17, 0x61, 0x90, 0x1a, 0x5c, 0x65, 0x33,
+	0xd3, 0x33, 0x58, 0x04, 0xb7, 0xe2, 0x0d, 0x26, 0x35, 0x4d, 0x0b, 0x36, 0xbf, 0x92, 0x3f, 0x8b,
+	0xb9, 0x85, 0x77, 0x72, 0xd3, 0xa5, 0x27, 0x10, 0xa9, 0x17, 0x91, 0xc4, 0x56, 0x67, 0xf9, 0xbe,
+	0xf7, 0xbe, 0x47, 0xae, 0x9d, 0xb7, 0xa1, 0xf6, 0x2f, 0xaa, 0xd9, 0x6b, 0xd0, 0x70, 0x18, 0x2c,
+	0x78, 0xa0, 0x44, 0x83, 0x53, 0x56, 0x2a, 0x53, 0xb7, 0xbb, 0xbd, 0xee, 0x7c, 0x1b, 0xe4, 0xa1,
+	0x86, 0xbe, 0x8c, 0x93, 0x32, 0x4d, 0x64, 0x68, 0x52, 0x4a, 0xa1, 0xfc, 0x57, 0xef, 0xde, 0x11,
+	0xb9, 0x7c, 0x04, 0x0d, 0x4f, 0x31, 0x55, 0xa1, 0xb9, 0xa7, 0x8c, 0x64, 0xe6, 0xd8, 0x2b, 0x86,
+	0x38, 0x16, 0x17, 0x55, 0x36, 0x7e, 0xde, 0xae, 0x9e, 0x13, 0xa1, 0x9c, 0x6c, 0x65, 0x67, 0x7d,
+	0xfb, 0x70, 0x3c, 0x31, 0xcc, 0xb1, 0x58, 0xcf, 0xed, 0x1f, 0xa5, 0x3b, 0x92, 0x0f, 0x2d, 0x18,
+	0xc5, 0xd6, 0x67, 0xf2, 0x2f, 0x8a, 0xb6, 0xeb, 0xe4, 0x6b, 0x67, 0xb4, 0x63, 0x19, 0xc7, 0x22,
+	0x5f, 0xec, 0x85, 0xd2, 0x1b, 0xb2, 0x71, 0x03, 0x04, 0xa7, 0x58, 0xce, 0xb1, 0xd8, 0xce, 0xfd,
+	0xcc, 0xe2, 0x77, 0x0f, 0x46, 0x9d, 0xd8, 0x86, 0x63, 0x81, 0x96, 0xef, 0x84, 0xaa, 0xab, 0x71,
+	0x2a, 0xd0, 0xc7, 0x54, 0xa0, 0xaf, 0xa9, 0x40, 0x6f, 0xdf, 0xc5, 0xea, 0x27, 0x00, 0x00, 0xff,
+	0xff, 0x7f, 0xc6, 0x13, 0x28, 0x29, 0x01, 0x00, 0x00,
+}

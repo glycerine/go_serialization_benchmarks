@@ -382,6 +382,18 @@ type FlatBufferSerializer struct {
 	builder *flatbuffers.Builder
 }
 
+var fbSer = &FlagBufferSerializer{flatbuffers.NewBuilder(0)}
+
+func BenchmarkFlatBufferMarshal(b *testing.B) {
+	b.StopTimer()
+	data := commonData
+	b.ReportAllocs()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		fbSer.Marshal(data[rand.Intn(len(data))])
+	}
+}
+
 func (s *FlatBufferSerializer) Marshal(o interface{}) []byte {
 	a := o.(*A)
 	builder := s.builder
@@ -423,12 +435,40 @@ func (s *FlatBufferSerializer) String() string {
 	return "FlatBuffer"
 }
 
-func BenchmarkFlatbuffersMarshal(b *testing.B) {
-	benchMarshal(b, &FlatBufferSerializer{flatbuffers.NewBuilder(0)})
-}
-
 func BenchmarkFlatBuffersUnmarshal(b *testing.B) {
-	benchUnmarshal(b, &FlatBufferSerializer{flatbuffers.NewBuilder(0)})
+	fbUn := &FlatBufferSerializer{flatbuffers.NewBuilder(0)}
+
+	b.StopTimer()
+	//data := generate()
+	data := commonData
+
+	ser := make([][]byte, len(data))
+	for i, d := range data {
+		o := s.Marshal(d)
+		t := make([]byte, len(o))
+		copy(t, o)
+		ser[i] = t
+	}
+
+	o := &A{}
+	b.ReportAllocs()
+	b.ResetTimer()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		n := rand.Intn(len(ser))
+		err := fbUn.Unmarshal(ser[n], o)
+		if err != nil {
+			b.Fatalf("%s failed to unmarshal: %s (%s)", s, err, ser[n])
+		}
+		// Validate unmarshalled data.
+		if validate != "" {
+			i := data[n]
+			correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay.String() == i.BirthDay.String() //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
+			if !correct {
+				b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
+			}
+		}
+	}
 }
 
 // github.com/glycerine/go-capnproto
@@ -1004,75 +1044,5 @@ func BenchmarkZebraPackMarshal(b *testing.B) {
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		data[rand.Intn(len(data))].ZMarshalMsg(buf)
-		//proto.Marshal(data[rand.Intn(len(data))])
 	}
 }
-
-/*
-// msgp - glycerine with omitempty
-
-func BenchmarkMsgpGlycerineOmitEmptyUnmarshal(b *testing.B) {
-	b.StopTimer()
-//	data := generateMsgpGlycerineOmitEmpty()
-	data := commonData
-
-	ser := make([][]byte, len(data))
-	for i, d := range data {
-		ser[i], _ = d.MarshalMsg(nil)
-		//ser[i], _ = proto.Marshal(d)
-	}
-	o := &A{}
-	z := A{}
-	var n int
-	var err error
-	b.ResetTimer()
-	b.ReportAllocs()
-	b.StartTimer()
-	for i := 0; i < b.N; i++ {
-		n = rand.Intn(len(ser))
-		*o = z // clear
-		_, err = o.UnmarshalMsg(ser[n])
-		if err != nil {
-			b.Fatalf("zebrapack failed to unmarshal: %s (%s)", err, ser[n])
-		}
-
-		// Validate unmarshalled data.
-		//	if validate != "" {
-		//		i := data[n]
-		//		correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay == i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
-		//		if !correct {
-		//			b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
-		//		}
-		//	}
-
-	}
-}
-
-func generateMsgpGlycerineOmitEmpty() []*A {
-	a := make([]*A, 0, 1000)
-	for i := 0; i < 1000; i++ {
-		a = append(a, &A{
-			Name:     randString(16),
-			BirthDay: time.Now(),
-			Phone:    randString(10),
-			Siblings: rand.Intn(5),
-			Spouse:   rand.Intn(2) == 1,
-			Money:    rand.Float64(),
-		})
-	}
-	return a
-}
-
-func BenchmarkMsgpGlycerineOmitEmptyMarshal(b *testing.B) {
-	b.StopTimer()
-//	data := generateMsgpGlycerineOmitEmpty()
-	data := commonData
-
-	b.ReportAllocs()
-	b.StartTimer()
-	for i := 0; i < b.N; i++ {
-		data[rand.Intn(len(data))].MarshalMsg(nil)
-		//proto.Marshal(data[rand.Intn(len(data))])
-	}
-}
-*/
