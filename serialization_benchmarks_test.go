@@ -1046,3 +1046,88 @@ func BenchmarkZebraPackMarshal(b *testing.B) {
 		data[rand.Intn(len(data))].ZMarshalMsg(buf)
 	}
 }
+
+func BenchmarkGreenPackUnmarshal(b *testing.B) {
+	b.StopTimer()
+	//	data := generateGreenPack()
+	data := commonData
+
+	ser := make([][]byte, len(data))
+	for i, d := range data {
+		ser[i], _ = d.ZMarshalMsg(nil)
+		//ser[i], _ = proto.Marshal(d)
+	}
+	o := &A{}
+	z := A{}
+	var n int
+	var err error
+	b.ResetTimer()
+	b.ReportAllocs()
+
+	// compute bytes read
+	red := 0
+	for i := range ser {
+		red += len(ser[i])
+	}
+	b.SetBytes(int64(red / len(ser)))
+
+	b.SetBytes(int64(len(ser[0])))
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		n = rand.Intn(len(ser))
+		*o = z // clear
+		_, err = o.ZUnmarshalMsg(ser[n])
+		if err != nil {
+			b.Fatalf("zebrapack failed to unmarshal: %s (%s)", err, ser[n])
+		}
+
+		// Validate unmarshalled data.
+		if validate != "" {
+			i := data[n]
+			correct := o.Name == i.Name && o.Phone == i.Phone && o.Siblings == i.Siblings && o.Spouse == i.Spouse && o.Money == i.Money && o.BirthDay == i.BirthDay //&& cmpTags(o.Tags, i.Tags) && cmpAliases(o.Aliases, i.Aliases)
+			if !correct {
+				b.Fatalf("unmarshaled object differed:\n%v\n%v", i, o)
+			}
+		}
+
+	}
+}
+
+func generateGreenPack() []*A {
+	a := make([]*A, 0, 1000)
+	for i := 0; i < 1000; i++ {
+		a = append(a, &A{
+			Name:     randString(16),
+			BirthDay: time.Now(),
+			Phone:    randString(10),
+			Siblings: rand.Intn(5),
+			Spouse:   rand.Intn(2) == 1,
+			Money:    rand.Float64(),
+		})
+	}
+	return a
+}
+
+func BenchmarkGreenPackMarshal(b *testing.B) {
+	b.StopTimer()
+	//data := generateGreenPack()
+	data := commonData
+
+	b.ReportAllocs()
+	_, err := data[rand.Intn(len(data))].GreenMarshalMsg(nil)
+	if err != nil {
+		panic(err)
+	}
+	// compute bytes written
+	writ := 0
+	for i := range data {
+		o, _ := data[i].GreenMarshalMsg(nil)
+		writ += len(o)
+	}
+	b.SetBytes(int64(writ / len(data)))
+	buf := make([]byte, 0, 512)
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		data[rand.Intn(len(data))].GreenMarshalMsg(buf)
+	}
+}
